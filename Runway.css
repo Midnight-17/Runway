@@ -1,0 +1,82 @@
+/* CSS Reset (simplified version of modern-normalize) */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px; /* 1rem = 16px */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-family: sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* :root variables */
+:root {
+    --bg-color: #121212;          /* Main background */
+    --bg-secondary: #1e1e1e;      /* Card or section background */
+    --font-color: #e6e6e6;        /* Primary font */
+    --font-secondary: #66cccc;
+
+  --gap-sm: 0.5rem;
+  --gap-md: 1rem;
+  --gap-lg: 2rem;
+
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.5rem;
+}
+
+/* linear-gradient(145deg, #0e0e0e, #1a1a1a) */
+
+.countdown-card {
+  background: linear-gradient(45deg, #0f0f0f, #151515);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  border-radius: 0.5rem;
+  width: 95vw;
+  margin-left: 2.5vw;
+  margin-right: 2.5vw;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.countdown-card p {
+  font-size: var(--font-size-lg);
+  color: var(--font-color);
+}
+
+.countdown-card .big-number {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.countdown-card .label {
+  color: var(--font-secondary);
+  font-size: var(--font-size-md);
+}
+
+.set{
+    display: flex;
+    justify-content: center;
+}
+
+#first{
+    margin-top: 2rem;
+}
+
+@media (min-width:1000px){
+    .countdown-card {
+        width: 90vw;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
