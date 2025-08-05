@@ -38,12 +38,12 @@ body {
 /* linear-gradient(145deg, #0e0e0e, #1a1a1a) */
 
 .countdown-card {
-  background: linear-gradient(45deg, #0f0f0f, #151515);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #080808, #1f1e1e);
+  box-shadow: 0 0.5rem 1.5rem rgba(34, 65, 69, 0.958);
   border-radius: 0.5rem;
-  width: 95vw;
-  margin-left: 2.5vw;
-  margin-right: 2.5vw;
+  width: 90vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
   text-align: center;
   margin-top: 25px;
 }
@@ -72,6 +72,60 @@ body {
 #first{
     margin-top: 2rem;
 }
+
+
+.week{
+    width: 80vw;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  margin: 2rem auto;
+  width: 90vw; /* updated to 90% of viewport width */
+  max-width: 90vw;
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+/* Base box style */
+.bx {
+  aspect-ratio: 1 / 1;
+  border: 2px solid white;
+  border-radius: 0.5rem;
+  background-color: #1e1e1e;
+  box-shadow:
+    0.3rem 0.3rem 0.5rem rgb(255 255 255 / 70%), 
+    inset 0 0 0.3rem rgba(255, 255, 255, 0.05); /* subtle inner light */
+  transition: all 0.2s ease;
+}
+
+/* States */
+.complete {
+  background-color: var(--font-secondary);
+  color: white;
+}
+
+.halfway {
+  background-color: #cc6666;
+  color: white;
+}
+
+.not-started {
+  background-color: white;
+  color: black;
+}
+
+/* Hover for deeper 3D effect */
+
+
+
 
 @media (min-width:1000px){
     .countdown-card {
