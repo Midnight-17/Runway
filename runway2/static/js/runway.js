@@ -65,7 +65,9 @@ const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                     'July', 'August', 'September', 'October', 'November', 'December'];
 
 const mnth = document.getElementById("monthLabel");
-monthLabel.textContent = monthNames[month]; // month from new Date().getMonth()
+if (mnth) {
+  mnth.textContent = monthNames[month]; // month from new Date().getMonth()
+}
 
 
 

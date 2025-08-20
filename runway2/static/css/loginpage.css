@@ -1,0 +1,102 @@
+:root {
+    --color-bg: #000;
+    --color-form-bg: #000;
+    --color-input-bg: #222;
+    --color-text: #ccc;
+    --color-active-tab: #fff;
+    --color-inactive-tab: #888;
+    --color-underline: #66cccc;
+    --color-btn: #66cccc;
+    --color-btn-hover: #55bbbb;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+}
+
+.form-container {
+    background-color: var(--color-form-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(102, 204, 204, 0.3);
+}
+
+.tab-header {
+    display: flex;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.tab-header span {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--color-inactive-tab);
+    transition: color 0.3s;
+}
+
+.tab-header .active-tab {
+    color: var(--color-active-tab);
+}
+
+#underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background-color: var(--color-underline);
+    transition: left 0.3s;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden-form {
+    display: none;
+}
+
+label {
+    margin-bottom: 0.3rem;
+    color: #ddd;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--color-btn);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--color-btn-hover);
+}

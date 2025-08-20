@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In</title>
+  <link rel="stylesheet" href="{% static 'css/loginpage.css' %}">
+  <style>
+    /* Scoped tweaks for single-tab header on login page */
+    .tab-header.single { justify-content: center; }
+    .tab-header .single-tab { position: relative; display: inline-block; }
+    .tab-header.single #underline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--color-underline);
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <div class="tab-header single">
+    <span class="active-tab single-tab">Log In
+      <div id="underline"></div>
+    </span>
+  </div>
+
+  <form method="POST" class="active-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <p>
+      <label for="id_username">Username</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <span class="error">{{ form.username.errors|striptags }}</span>
+      {% endif %}
+    </p>
+    <p>
+      <label for="id_password">Password</label>
+      {{ form.password }}
+      {% if form.password.errors %}
+        <span class="error">{{ form.password.errors|striptags }}</span>
+      {% endif %}
+    </p>
+
+    <button type="submit" class="submit-btn">Log In</button>
+  </form>
+
+  <div style="margin-top: 12px; text-align:center;">
+    <a href="{% url 'runway2:signup' %}">Don't have an account? Sign up</a>
+  </div>
+</div>
+
+</body>
+</html>
