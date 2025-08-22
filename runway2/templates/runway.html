@@ -63,9 +63,16 @@
     </section>
 
     <div class="button-container">
-      <button class="action-button" id="trackBtn">Track My Progress</button>
-      <input type="file" id="videoInput" accept="video/*" hidden />
+      <form id="uploadForm" method="POST" enctype="multipart/form-data" action="{% url 'runway2:upload_video' %}">
+        {% csrf_token %}
+        <button type="button" class="action-button" id="trackBtn">Track My Progress</button>
+        <input type="file" id="videoInput" name="video" accept="video/*" hidden />
+      </form>
     </div>
+
+<!-- A container where uploaded videos will appear -->
+<div id="videoGallery"></div>
+
 
     <footer class="footer">
       <span class="subtle">Runway • Designed for students</span>

@@ -147,3 +147,53 @@ grid.forEach(({date,inMonth}) => {
 
     
 });
+
+//getting all the thing
+const trackBtn = document.getElementById("trackBtn");
+const videoInput = document.getElementById("videoInput");
+const uploadForm = document.getElementById("uploadForm");
+const videoGallery = document.getElementById("videoGallery");
+
+trackBtn.addEventListener("click", () => {
+  videoInput.click(); // open file picker
+});
+
+videoInput.addEventListener("change", () => {
+  const formData = new FormData(uploadForm);
+  fetch(uploadForm.action, {
+    method: "POST",
+    body: formData,
+    headers: {
+      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.video_url) {
+            // Find today's cell
+            const todayCell = document.querySelector(".day.today");
+            if (todayCell) {
+                // Remove any existing video link first
+                const existingLink = todayCell.querySelector(".video-link");
+                if (existingLink) existingLink.remove();
+
+                // Create the link element
+                const videoLink = document.createElement("a");
+                videoLink.textContent = "Access video";
+                videoLink.href = data.video_url;
+                videoLink.target = "_blank";
+                videoLink.className = "video-link"; // for styling
+                videoLink.style.color = "#66cccc";       // ✅ this is correct
+                videoLink.style.width = "80%";           // ✅ needs to be set via style object
+                videoLink.style.display = "block";       // optional, makes width work properly
+
+
+                // Append the link inside today's cell
+                todayCell.appendChild(videoLink);
+            }
+        } else {
+            alert("Upload failed.");
+        }
+    })
+    .catch((err) => console.error(err));
+});

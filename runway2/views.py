@@ -9,6 +9,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.timezone import now as tz_now
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.urls import reverse_lazy
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 
 @ensure_csrf_cookie
@@ -30,29 +32,14 @@ def home(request):
         "Days_left": delta
     })
 
-@require_POST
-def upload_submission(request):
-    file = request.FILES.get('file')
-    if not file:
-        return JsonResponse({"error": "No file provided"}, status=400)
-
-    date_str = request.POST.get('date')
-    try:
-        if date_str:
-            date_val = datetime.fromisoformat(date_str).date()
-        else:
-            date_val = tz_now().date()
-    except ValueError:
-        return JsonResponse({"error": "Invalid date format; expected YYYY-MM-DD"}, status=400)
-
-    sub = Submission.objects.create(file=file, date=date_val)
-    return JsonResponse({
-        "ok": True,
-        "date": date_val.isoformat(),
-        "file_url": sub.file.url,
-        "id": sub.id,
-    })
-
+def upload_video(request):
+    if request.method == "POST" and request.FILES.get("video"):
+        video = request.FILES["video"]
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+        filename = fs.save(video.name, video)
+        file_url = fs.url(filename)
+        return JsonResponse({"video_url": file_url})
+    return JsonResponse({"error": "No video uploaded"}, status=400)
 
 # --- Signup view (teachers and students) ---
 def signup_view(request):
