@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from datetime import datetime
-from .models import Submission, TeacherProfile, StudentProfile, CustomUser
+from datetime import datetime, date
+from .models import Submission, TeacherProfile, StudentProfile, CustomUser, StudentProgress
 from .forms import StudentSignUpForm, TeacherSignUpForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_POST
@@ -34,6 +34,33 @@ def home(request):
 
 def upload_video(request):
     if request.method == "POST" and request.FILES.get("video"):
+        # ok these are the steps that we are going to use to actually use to append to the lists
+        today = date.today()
+        month_day = today.day
+        year_day = today.timetuple().tm_yday
+
+        Student_profile = StudentProfile.objects.get( user = request.user )
+        Student_Progress, created  = StudentProgress.objects.get_or_create(Student = Student_profile)
+        Student_Progress.Month_Progress.append(month_day)
+        Student_Progress.Year_Progress.append(year_day)
+        Student_Progress.save()
+
+
+
+
+        print(Student_Progress.Month_Progress)
+        print(Student_Progress.Year_Progress)
+
+
+
+        
+
+
+
+
+
+
+
         video = request.FILES["video"]
         fs = FileSystemStorage(location=settings.MEDIA_ROOT)
         filename = fs.save(video.name, video)

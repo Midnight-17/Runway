@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 
@@ -31,3 +32,13 @@ class StudentProfile(models.Model):
 
     def __str__(self):
         return f"StudentProfile({self.user.username}) -> {self.teacher}"
+    
+
+# Ok here we are making the lists for studnets, year completed progress and motnh completed progress 
+class StudentProgress(models.Model):
+    Student = models.OneToOneField(StudentProfile, on_delete=models.CASCADE)
+    Year_Progress = models.JSONField( default=list, blank=True)
+    Month_Progress = models.JSONField( default=list, blank=True)
+
+
+
