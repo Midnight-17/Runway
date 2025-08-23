@@ -8,5 +8,6 @@ urlpatterns = [
     path('homepage/', views.home, name='homepage'),
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.LoginView.as_view(), name='login'),
-    path("upload-video/", views.upload_video, name="upload_video")
+    path("upload-video/", views.upload_video, name="upload_video"),
+    path("month-progress/", views.get_month_progress, name="month_progress")
 ]
