@@ -1,8 +1,94 @@
+let completions = [];  // will store the array from Django
+let videoUrls = {};  // Store video URLs by date (day of month)
+const now = new Date();
+const year = now.getFullYear();
+const currentMonth = now.getMonth();
+const calendar = document.getElementById('calendar');
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+
+function renderCalendar() {
+  if (!calendar) return;
+  // Clear any existing content
+  calendar.innerHTML = '';
+
+  // Update month label
+  const mnth = document.getElementById("monthLabel");
+  if (mnth) {
+    mnth.textContent = monthNames[currentMonth];
+  }
+
+  // Weekday headers
+  weekdays.forEach(w => {
+    const el = document.createElement('div');
+    el.className = 'weekday';
+    el.textContent = w;
+    calendar.appendChild(el);
+  });
+
+  // Build the 6x7 calendar grid for the current month
+  const grid = makecalendargrid(year, currentMonth);
+  grid.forEach(({ date, inMonth }) => {
+    const dayNumber = date.getDate();
+    const hasVideo = videoUrls[dayNumber]; // Check if this day has a video
+    
+    // Create cell container (either div or anchor)
+    let cell;
+    if (hasVideo) {
+      // If there's a video, make it a clickable link
+      cell = document.createElement('a');
+      cell.href = hasVideo;
+      cell.target = '_blank'; // Open in new tab
+      cell.style.textDecoration = 'none';
+      cell.style.color = 'inherit';
+    } else {
+      // Regular div if no video
+      cell = document.createElement('div');
+    }
+    
+    cell.className = 'day' + (inMonth ? '' : ' muted');
+
+    // Day number
+    const num = document.createElement('div');
+    num.className = 'num';
+    num.textContent = String(dayNumber);
+    cell.appendChild(num);
+
+    // Chip
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    cell.appendChild(chip);
+
+    // Today highlight
+    const isToday = date.toDateString() === now.toDateString();
+    if (isToday) { cell.classList.add('today'); }
+
+    // Completed highlight (only mark if the date is in the current month)
+    if (inMonth && completions.includes(dayNumber)) {
+      cell.classList.add('completed');
+    }
+
+
+
+    calendar.appendChild(cell);
+  });
+}
+
+fetch("/monthly-progress/")
+  .then(res => res.json())
+  .then(data => {
+    completions = data.completions || [];
+    console.log("Loaded progress:", completions);
+    // After fetching, render the calendar
+    renderCalendar();
+  })
+  .catch(err => console.error("Error fetching progress:", err));
+
 function makecalendargrid(year,month){
     const MonthStart = new Date(year,month,1).getDay();
     const MonthEnd = new Date(year,month+1,0).getDate();
     const grid = [];
-
 
     for (let i = MonthStart-1; i >= 0; i--){
         grid.push({
@@ -29,10 +115,7 @@ function makecalendargrid(year,month){
     return grid;                        
 }
 
-
-
-
-//fucntion to format date
+//function to format date
 function formatDate(d) {
     return d.toLocaleDateString(undefined, {
       year: 'numeric',
@@ -40,9 +123,6 @@ function formatDate(d) {
       day: 'numeric'
     });
   }
-
-
-
 
 //defining the function to calculate the days between two dates
 function daysBetween(a,b){
@@ -52,103 +132,15 @@ function daysBetween(a,b){
     return Math.round((end - start) / msPerDay);
 }
 
-
-
-// geting the current date and making the grid
-const now = new Date();
-const year = now.getFullYear();
-const month = now.getMonth();
-const grid = makecalendargrid(year,month);
-
-//make the month appear on top
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'];
-
-const mnth = document.getElementById("monthLabel");
-if (mnth) {
-  mnth.textContent = monthNames[month]; // month from new Date().getMonth()
-}
-
-
-
-//exampel exam date
+//example exam date
 const EXAM_DATE = new Date(2025, 8, 21);
 
-
-//so here we are wrting the js to render the exam date and the number of day to exam 
+//so here we are writing the js to render the exam date and the number of day to exam 
 const daysToExam = Math.max(0, daysBetween(now, EXAM_DATE));
 document.getElementById('daysToExam').textContent = String(daysToExam);
 document.getElementById('examDateHint').textContent = `Exam: ${formatDate(EXAM_DATE)}`;
 
-
-
-
-//adding the headers to the calendar grid
-const calendar = document.getElementById('calendar');
-const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-weekdays.forEach(w => {
-  const el = document.createElement('div');
-  el.className = 'weekday';
-  el.textContent = w;
-  calendar.appendChild(el);
-});
-
-
-
-
-
-
-grid.forEach(({date,inMonth}) => {
-
-
-  
-
-
-
-
-
-
-    //looping through the 42 cells in the grid
-    const cell = document.createElement('div');
-    cell.className = 'day' + (inMonth ? '' : ' muted');
-    
-  
-    /// Define first 10 days as completed
-    const completions = [];
-    for (let i = 1; i <= 10; i++) completions.push(i);
-
-
-
-
-
-    //adding the number to each cell
-    const num = document.createElement('div');
-    num.className = 'num';
-    num.textContent = String(date.getDate());
-    cell.appendChild(num);  
-
-    //adding the chip to each cell
-    const chip = document.createElement('div');
-    chip.className = 'chip';
-    cell.appendChild(chip);
-
-    //adding a today highlight
-    const isToday = date.toDateString() === now.toDateString();
-    if (isToday) {cell.classList.add('today');}
-    
-    //adding a completed highlight
-    if (inMonth && completions.includes(date.getDate())) {
-        cell.classList.add('completed');
-    }
-
-
-    // adding the cell to the calendar (num already appended before chip above)
-    calendar.appendChild(cell);
-
-    
-});
-
-//getting all the thing
+//getting all the things
 const trackBtn = document.getElementById("trackBtn");
 const videoInput = document.getElementById("videoInput");
 const uploadForm = document.getElementById("uploadForm");
@@ -170,27 +162,19 @@ videoInput.addEventListener("change", () => {
     .then((res) => res.json())
     .then((data) => {
         if (data.video_url) {
-            // Find today's cell
-            const todayCell = document.querySelector(".day.today");
-            if (todayCell) {
-                // Remove any existing video link first
-                const existingLink = todayCell.querySelector(".video-link");
-                if (existingLink) existingLink.remove();
-
-                // Create the link element
-                const videoLink = document.createElement("a");
-                videoLink.textContent = "Access video";
-                videoLink.href = data.video_url;
-                videoLink.target = "_blank";
-                videoLink.className = "video-link"; // for styling
-                videoLink.style.color = "#66cccc";       // ✅ this is correct
-                videoLink.style.width = "80%";           // ✅ needs to be set via style object
-                videoLink.style.display = "block";       // optional, makes width work properly
-
-
-                // Append the link inside today's cell
-                todayCell.appendChild(videoLink);
+            // Update completions
+            if (data.Month_Progress) {
+                completions = data.Month_Progress;
             }
+            
+            // Store the video URL for today's date
+            const today = now.getDate();
+            videoUrls[today] = data.video_url;
+            
+            // Re-render the entire calendar to show the new clickable cell
+            renderCalendar();
+            
+            console.log("Video uploaded successfully for day:", today);
         } else {
             alert("Upload failed.");
         }

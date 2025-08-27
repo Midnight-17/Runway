@@ -11,6 +11,8 @@ from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 @ensure_csrf_cookie
@@ -24,12 +26,17 @@ def home(request):
     # Calculate the difference in days
     delta = (target_date - today).days
 
+    #define which days in the month are completed
+    Student_profile = StudentProfile.objects.get(user=request.user)
+    Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
+    
     # If target date has already passed this year, calculate days until Nov 2 next year
     if delta < 0:
         delta = 0
 
     return render(request, 'runway.html',{
-        "Days_left": delta
+        "Days_left": delta,
+        "completions": json.dumps(Student_Progress.Month_Progress, cls=DjangoJSONEncoder)
     })
 
 def upload_video(request):
@@ -50,7 +57,7 @@ def upload_video(request):
 
 
 
-
+        get_month_progress(request)
 
 
 
@@ -68,12 +75,13 @@ def upload_video(request):
 
 def get_month_progress(request):
     # Get the logged-in student profile
-    Student_profile = StudentProfile.objects.get(user=request.user)
-    Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
+    Student_ = StudentProfile.objects.get( user = request.user)
+    Progress, created = StudentProgress.objects.get_or_create(Student = Student_)
+    Monthly_Progress = Progress.Month_Progress
 
     # Return JSON with Month_Progress
     return JsonResponse({
-        "completions": Student_Progress.Month_Progress  # e.g., [1, 5, 7]
+        "completions": Monthly_Progress  # e.g., [1, 5, 7]
     })
 
 

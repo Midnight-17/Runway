@@ -9,5 +9,5 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.LoginView.as_view(), name='login'),
     path("upload-video/", views.upload_video, name="upload_video"),
-    path("month-progress/", views.get_month_progress, name="month_progress")
+    path("monthly-progress/", views.get_month_progress, name="monthly_progress")
 ]
