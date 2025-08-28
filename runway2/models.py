@@ -31,7 +31,7 @@ class StudentProfile(models.Model):
     teacher = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"StudentProfile({self.user.username}) -> {self.teacher}"
+        return f"{self.user.username}"
     
 
 # Ok here we are making the lists for studnets, year completed progress and motnh completed progress 
@@ -39,6 +39,10 @@ class StudentProgress(models.Model):
     Student = models.OneToOneField(StudentProfile, on_delete=models.CASCADE)
     Year_Progress = models.JSONField( default=list, blank=True)
     Month_Progress = models.JSONField( default=list, blank=True)
+    Video_Progress = models.JSONField(default=dict, blank=True) 
+
+    def __str__(self):
+        return f"{self.Student}'s Progress" 
 
 
 

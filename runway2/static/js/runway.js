@@ -1,5 +1,4 @@
-let completions = [];  // will store the array from Django
-let videoUrls = {};  // Store video URLs by date (day of month)
+let completions = [];  // will store the array from Django // Store video URLs by date (day of month)
 const now = new Date();
 const year = now.getFullYear();
 const currentMonth = now.getMonth();
@@ -31,7 +30,7 @@ function renderCalendar() {
   const grid = makecalendargrid(year, currentMonth);
   grid.forEach(({ date, inMonth }) => {
     const dayNumber = date.getDate();
-    const hasVideo = videoUrls[dayNumber]; // Check if this day has a video
+    const hasVideo = Video_Progress_[dayNumber]; // Check if this day has a video
     
     // Create cell container (either div or anchor)
     let cell;
@@ -79,7 +78,9 @@ fetch("/monthly-progress/")
   .then(res => res.json())
   .then(data => {
     completions = data.completions || [];
+    Video_Progress_ = data.Video_Progress
     console.log("Loaded progress:", completions);
+    console.log(Video_Progress_);
     // After fetching, render the calendar
     renderCalendar();
   })

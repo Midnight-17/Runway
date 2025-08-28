@@ -50,25 +50,24 @@ def upload_video(request):
         Student_Progress, created  = StudentProgress.objects.get_or_create(Student = Student_profile)
         Student_Progress.Month_Progress.append(month_day)
         Student_Progress.Year_Progress.append(year_day)
-        Student_Progress.save()
-
-
-        
-
-
-
-        get_month_progress(request)
-
-
-
         video = request.FILES["video"]
         fs = FileSystemStorage(location=settings.MEDIA_ROOT)
         filename = fs.save(video.name, video)
         file_url = fs.url(filename)
+        Student_Progress.Video_Progress[str(month_day)] = file_url
+
+        print(Student_Progress.Video_Progress)
+
+        Student_Progress.save()
+
+
+
+        
         return JsonResponse({
                 "video_url": file_url,
                 "Month_Progress" : Student_Progress.Month_Progress,
-                "Year_Progress":Student_Progress.Year_Progress
+                "Year_Progress":Student_Progress.Year_Progress,
+                "Video_Progress": Student_Progress.Video_Progress
                              })
 
     return JsonResponse({"error": "No video uploaded"}, status=400)
@@ -78,10 +77,12 @@ def get_month_progress(request):
     Student_ = StudentProfile.objects.get( user = request.user)
     Progress, created = StudentProgress.objects.get_or_create(Student = Student_)
     Monthly_Progress = Progress.Month_Progress
+    Video_Progress = Progress.Video_Progress
 
     # Return JSON with Month_Progress
     return JsonResponse({
-        "completions": Monthly_Progress  # e.g., [1, 5, 7]
+        "completions": Monthly_Progress,  # e.g., [1, 5, 7]
+        "Video_Progress" : Video_Progress
     })
 
 
