@@ -170,7 +170,7 @@ videoInput.addEventListener("change", () => {
             
             // Store the video URL for today's date
             const today = now.getDate();
-            videoUrls[today] = data.video_url;
+            Video_Progress_[today] = data.video_url;;
             
             // Re-render the entire calendar to show the new clickable cell
             renderCalendar();

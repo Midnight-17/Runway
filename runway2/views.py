@@ -132,5 +132,13 @@ class LoginView(DjangoLoginView):
 
     def get_success_url(self):
         return reverse_lazy('runway2:homepage')
+    
+
+
+def teacher(request , teacher_name):
+    teacher = TeacherProfile.objects.get(user__username = teacher_name)
+    return render(request ,'teacher.html',{
+        "students": teacher.student.all()
+    })
 
 # Create your views here.
