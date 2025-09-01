@@ -106,7 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# settings.py
+TIME_ZONE = 'Asia/Singapore'  # or your local timezone
+USE_TZ = True
+
 
 USE_I18N = True
 

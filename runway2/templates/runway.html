@@ -63,7 +63,7 @@
     </section>
 
     <div class="button-container">
-      <form id="uploadForm" method="POST" enctype="multipart/form-data" action="{% url 'runway2:upload_video' %}">
+      <form id="uploadForm" method="POST" enctype="multipart/form-data" action="{% url 'runway2:upload_video' student_name=student_name %}">
         {% csrf_token %}
         <button type="button" class="action-button" id="trackBtn">Track My Progress</button>
         <input type="file" id="videoInput" name="video" accept="video/*" hidden />
@@ -75,6 +75,9 @@
       <span class="subtle">Runway • Designed for students</span>
     </footer>
   </div> 
+  <script>
+    const studentName = "{{ student_name }}";  // Django will render actual username
+  </script>
   <script src="{% static 'js/runway.js' %}"></script>
 </body>
 </html>

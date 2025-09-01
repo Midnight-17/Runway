@@ -74,7 +74,7 @@ function renderCalendar() {
   });
 }
 
-fetch("/monthly-progress/")
+fetch(`/monthly-progress/${studentName}`)
   .then(res => res.json())
   .then(data => {
     completions = data.completions || [];
