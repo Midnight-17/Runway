@@ -141,13 +141,20 @@ def Login(request):
 
 def teacher_(request , teacher_name):
     teacher = TeacherProfile.objects.get(user__username = teacher_name)
-    students = teacher.student.all()
+    students = teacher.students.all()
     default_student = students[0]
     return redirect("runway2:teacher", teacher_name = teacher, student_name = default_student)
 
 
 def teacher( request, teacher_name, student_name):
-    return render(request,"teacher.html")
+    teacher = TeacherProfile.objects.get(user__username = teacher_name)
+    student = StudentProfile.objects.get(user__username = student_name)
+    students = teacher.students.all
+    return render(request,"teacher.html", {
+        "teacher":teacher.user,
+        "student_name":student.user,
+        "students" : students
+    })
 
 
 # Create your views here.

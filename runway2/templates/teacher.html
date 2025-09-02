@@ -63,15 +63,18 @@
     </section>
     <ul>
     {% for student in students %}
-        <li>
+        <a href="{% url 'runway2:teacher' teacher student %}">
             {{ student }}
-        </li>
+        </a>
     {% endfor %}
     </ul>
     <footer class="footer">
       <span class="subtle">Runway • Designed for students</span>
     </footer>
   </div> 
+   <script>
+    const studentName = "{{ student_name }}";  // Django will render actual username
+  </script>
   <script src="{% static 'js/runway.js' %}"></script>
 </body>
 </html>
