@@ -147,38 +147,59 @@ const videoInput = document.getElementById("videoInput");
 const uploadForm = document.getElementById("uploadForm");
 const videoGallery = document.getElementById("videoGallery");
 
-trackBtn.addEventListener("click", () => {
-  videoInput.click(); // open file picker
+if (trackBtn && videoInput) {
+  trackBtn.addEventListener("click", () => {
+    videoInput.click();
+  });
+  videoInput.addEventListener("change", () => {
+    const formData = new FormData(uploadForm);
+    fetch(uploadForm.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+          if (data.video_url) {
+              // Update completions
+              if (data.Month_Progress) {
+                  completions = data.Month_Progress;
+              }
+              
+              // Store the video URL for today's date
+              const today = now.getDate();
+              Video_Progress_[today] = data.video_url;;
+              
+              // Re-render the entire calendar to show the new clickable cell
+              renderCalendar();
+              
+              console.log("Video uploaded successfully for day:", today);
+          } else {
+              alert("Upload failed.");
+          }
+      })
+      .catch((err) => console.error(err));
+  });
+
+
+}
+
+
+
+
+//get the button
+const studentButtons = document.querySelectorAll('.student-btn');
+
+studentButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const studentName = button.dataset.student; // <-- read from data-student
+    changeCalendar(studentName);
+  });
 });
 
-videoInput.addEventListener("change", () => {
-  const formData = new FormData(uploadForm);
-  fetch(uploadForm.action, {
-    method: "POST",
-    body: formData,
-    headers: {
-      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-        if (data.video_url) {
-            // Update completions
-            if (data.Month_Progress) {
-                completions = data.Month_Progress;
-            }
-            
-            // Store the video URL for today's date
-            const today = now.getDate();
-            Video_Progress_[today] = data.video_url;;
-            
-            // Re-render the entire calendar to show the new clickable cell
-            renderCalendar();
-            
-            console.log("Video uploaded successfully for day:", today);
-        } else {
-            alert("Upload failed.");
-        }
-    })
-    .catch((err) => console.error(err));
-});
+function changeCalendar(studentName) {
+  console.log("Switching calendar to:", studentName);
+  // your calendar logic here
+}

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/runway.css' %}">
+  <link rel="stylesheet" href="{% static 'css/Runway.css' %}">
 
 
 </head>
@@ -62,11 +62,20 @@
       </div>
     </section>
     <ul>
-    {% for student in students %}
-        <a href="{% url 'runway2:teacher' teacher student %}">
-            {{ student }}
-        </a>
-    {% endfor %}
+    <label for="studentSelect">Choose a student:</label>
+    <div class="student-selector">
+      {% for student in students %}
+        <button 
+          class="student-btn {% if student.user.username == student_name %}active{% endif %}" 
+          data-student="{{ student.user.username }}">
+          {{ student.user.username }}
+        </button>
+      {% endfor %}
+    </div>
+
+
+
+
     </ul>
     <footer class="footer">
       <span class="subtle">Runway • Designed for students</span>
