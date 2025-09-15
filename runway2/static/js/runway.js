@@ -192,14 +192,49 @@ if (trackBtn && videoInput) {
 //get the button
 const studentButtons = document.querySelectorAll('.student-btn');
 
+// mainStudent should be your current selected student
+let mainStudent = studentName; // studentName declared outside
+
 studentButtons.forEach(button => {
+  const studentName_ = button.dataset.student;
+
+  // Initial highlight
+  if (mainStudent === studentName_) {
+    button.style.color = "#00e0d5";
+    button.style.borderColor = "#00e0d5";
+  }
+
   button.addEventListener("click", () => {
-    const studentName = button.dataset.student; // <-- read from data-student
-    changeCalendar(studentName);
+    // Update mainStudent
+    mainStudent = studentName_;
+
+    // Update button highlights
+    studentButtons.forEach(btn => {
+      if (btn.dataset.student === mainStudent) {
+        btn.style.color = "#00e0d5";
+        btn.style.borderColor = "#00e0d5";
+      } else {
+        btn.style.color = "";        // reset color
+        btn.style.borderColor = "";  // reset border
+      }
+    });
+
+    // Update calendar
+    changeCalendar(mainStudent);
   });
 });
 
+
 function changeCalendar(studentName) {
-  console.log("Switching calendar to:", studentName);
+  fetch(`/monthly-progress/${studentName}`)
+  .then(res=>res.json())
+  .then((data)=>{
+    completions = data.completions || [];
+    Video_Progress_ = data.Video_Progress
+    console.log("Loaded progress:", completions);
+    console.log(Video_Progress_);
+    // After fetching, render the calendar
+    renderCalendar();
+  })
   // your calendar logic here
 }

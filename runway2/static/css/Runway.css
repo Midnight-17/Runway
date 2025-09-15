@@ -141,7 +141,7 @@ body {
 .day.muted { opacity: 0.45; filter: saturate(0.8); }
 
 /* Footer */
-.footer { display: flex; justify-content: center; margin-top: 18px; }
+.footer { display: flex; justify-content: center; margin-top: 18px; padding-bottom: 20px; }
 .subtle { color: var(--muted); font-size: 12px; }
 
 /* Action Button */
@@ -224,6 +224,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .student-btn {
