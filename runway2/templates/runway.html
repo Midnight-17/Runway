@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,8 +27,15 @@
       <div class="card">
         <div class="label">Days to exam</div>
         <div class="value" id="daysToExam">—</div>
-        <div class="hint" id="examDateHint">Exam: —</div>
+
+        <div class="exam-row">
+          <div class="hint" id="examDateHint">Exam: —</div>
+          <label for="examDateInput" class="change-date">Change date</label>
+        </div>
+        <input type="date" id="examDateInput" class="hidden-date-input">
       </div>
+
+
       <div class="card">
         <div class="label">Days consistent</div>
         <div class="value" id="daysConsistent">—</div>

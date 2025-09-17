@@ -40,6 +40,7 @@ class StudentProgress(models.Model):
     Year_Progress = models.JSONField( default=list, blank=True)
     Month_Progress = models.JSONField( default=list, blank=True)
     Video_Progress = models.JSONField(default=dict, blank=True) 
+    last_reset = models.DateField(null=True, blank=True)   # <-- new field
 
     def __str__(self):
         return f"{self.Student}'s Progress" 

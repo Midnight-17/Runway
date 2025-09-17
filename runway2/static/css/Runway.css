@@ -57,6 +57,9 @@ body {
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column; /* stack label, value, and row */
+  gap: 4px;
 }
 .card::after {
   content: '';
@@ -249,4 +252,35 @@ body {
   font-weight: 600;
   border: none;
 }
+
+
+.change-date {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 12px;
+  transition: color 0.2s;
+}
+
+.change-date:hover {
+  color: var(--accent);
+}
+
+.exam-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#examDateInput {
+  position: absolute;
+  left: -9999px;   /* move offscreen */
+  opacity: 0;
+  pointer-events: auto; /* allow clicks */
+  width: 1px;
+  height: 1px;
+}
+
+
 

@@ -7,6 +7,9 @@ const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                     'July', 'August', 'September', 'October', 'November', 'December'];
 
+
+
+
 function renderCalendar() {
   if (!calendar) return;
   // Clear any existing content
@@ -237,4 +240,19 @@ function changeCalendar(studentName) {
     renderCalendar();
   })
   // your calendar logic here
+}
+
+
+const changeDateBtn = document.getElementById("changeDateBtn");
+const examDateInput = document.getElementById("examDateInput");
+
+if (changeDateBtn && examDateInput) {
+  changeDateBtn.addEventListener("click", () => {
+    examDateInput.click()
+  });
+
+  examDateInput.addEventListener("change", (e) => {
+    const newDate = new Date(e.target.value);
+    console.log(newDate)
+});
 }

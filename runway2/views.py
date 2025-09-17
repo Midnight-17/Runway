@@ -35,6 +35,20 @@ def home(request, student_name):
     #define which days in the month are completed
     Student_profile = StudentProfile.objects.get(user__username = student_name)
     Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
+
+    #erase the year progress every new year
+    if (today.day == 1 and today.month == 1):
+        Student_Progress.Year_Progress = []
+        Student_Progress.save()
+
+    #this is to erase teh month data every month
+    if (Student_Progress.last_reset is None or
+        Student_Progress.last_reset.month != today.month or
+        Student_Progress.last_reset.year != today.year):
+            Student_Progress.Month_Progress = []
+            Student_Progress.Video_Progress = {}
+            Student_Progress.last_reset = today
+            Student_Progress.save()
     
     # If target date has already passed this year, calculate days until Nov 2 next year
     if delta < 0:
@@ -153,7 +167,7 @@ def teacher_(request , teacher_name):
 def teacher( request, teacher_name, student_name):
     teacher = TeacherProfile.objects.get(user__username = teacher_name)
     student = StudentProfile.objects.get(user__username = student_name)
-    students = teacher.students.all
+    students = teacher.students.all()
     return render(request,"teacher.html", {
         "teacher":teacher.user,
         "student_name":student.user,
