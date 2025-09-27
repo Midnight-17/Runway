@@ -268,5 +268,3 @@ examDateInput.addEventListener("change", (e) => {
   changeDateBtn.style.display = "inline-block";
    // hide input, show label again
 });
-
-
