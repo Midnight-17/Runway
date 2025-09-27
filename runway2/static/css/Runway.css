@@ -273,14 +273,17 @@ body {
   align-items: center;
 }
 
-#examDateInput {
-  position: absolute;
-  left: -9999px;   /* move offscreen */
-  opacity: 0;
-  pointer-events: auto; /* allow clicks */
-  width: 1px;
-  height: 1px;
+
+
+.hidden-date-input {
+  display: none; /* initially hidden */
+  width: 130px;        /* adjust width to fit nicely */
+  height: 30px;        /* reasonable height */
+  font-size: 14px;     /* text size */
+  padding: 2px 5px;    /* some padding */
+  box-sizing: border-box; 
+  vertical-align: middle; /* align with text */
 }
 
-
+/* When editing (swap label with input) */
 

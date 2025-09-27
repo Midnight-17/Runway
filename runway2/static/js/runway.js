@@ -243,16 +243,30 @@ function changeCalendar(studentName) {
 }
 
 
+
 const changeDateBtn = document.getElementById("changeDateBtn");
 const examDateInput = document.getElementById("examDateInput");
+const examRow = document.querySelector(".exam-row");
 
-if (changeDateBtn && examDateInput) {
-  changeDateBtn.addEventListener("click", () => {
-    examDateInput.click()
-  });
+changeDateBtn.addEventListener("click", () => {
+  examDateInput.style.display = "inline-block";
+  changeDateBtn.style.display = "none";
 
-  examDateInput.addEventListener("change", (e) => {
-    const newDate = new Date(e.target.value);
-    console.log(newDate)
+// hide label, show input
+  examDateInput.focus();
 });
-}
+
+examDateInput.addEventListener("change", (e) => {
+  const newDate = new Date(e.target.value);
+  if (!isNaN(newDate)) {
+    document.getElementById("examDateHint").textContent = `Exam: ${formatDate(newDate)}`;
+    EXAM_DATE.setTime(newDate.getTime());
+    const daysToExam = Math.max(0, daysBetween(new Date(), EXAM_DATE));
+    document.getElementById('daysToExam').textContent = String(daysToExam);
+  }
+  examDateInput.style.display = "none";
+  changeDateBtn.style.display = "inline-block";
+   // hide input, show label again
+});
+
+
