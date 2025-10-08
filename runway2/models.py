@@ -29,6 +29,7 @@ class TeacherProfile(models.Model):
 class StudentProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     teacher = models.ForeignKey(TeacherProfile, on_delete=models.SET_NULL, null=True, related_name="students")
+    exam_date = models.DateField(null=True, blank=True )
 
     def __str__(self):
         return f"{self.user.username}"

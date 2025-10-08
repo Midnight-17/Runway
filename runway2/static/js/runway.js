@@ -137,7 +137,8 @@ function daysBetween(a,b){
 }
 
 //example exam date
-const EXAM_DATE = new Date(2025, 8, 21);
+const EXAM_DATE = new Date(exam_date);
+console.log(EXAM_DATE)
 
 //so here we are writing the js to render the exam date and the number of day to exam 
 const daysToExam = Math.max(0, daysBetween(now, EXAM_DATE));
@@ -256,6 +257,11 @@ changeDateBtn.addEventListener("click", () => {
   examDateInput.focus();
 });
 
+
+
+
+const ExamInput = document.getElementById("examDateInput")
+const form = ExamInput.closest("form")
 examDateInput.addEventListener("change", (e) => {
   const newDate = new Date(e.target.value);
   if (!isNaN(newDate)) {
@@ -263,8 +269,14 @@ examDateInput.addEventListener("change", (e) => {
     EXAM_DATE.setTime(newDate.getTime());
     const daysToExam = Math.max(0, daysBetween(new Date(), EXAM_DATE));
     document.getElementById('daysToExam').textContent = String(daysToExam);
+    console.log("js is workign")
+    form.submit()
   }
   examDateInput.style.display = "none";
   changeDateBtn.style.display = "inline-block";
    // hide input, show label again
 });
+
+
+
+//this is to submit the new date

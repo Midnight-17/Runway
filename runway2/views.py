@@ -26,15 +26,12 @@ def home(request, student_name):
     # Get today's date
     today = datetime.today().date()
 
-    # Define the target date (November 2 of the current year)
-    target_date = datetime(today.year, 11, 2).date()
-
-    # Calculate the difference in days
-    delta = (target_date - today).days
 
     #define which days in the month are completed
     Student_profile = StudentProfile.objects.get(user__username = student_name)
     Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
+
+   
 
     #erase the year progress every new year
     if (today.day == 1 and today.month == 1):
@@ -50,14 +47,21 @@ def home(request, student_name):
             Student_Progress.last_reset = today
             Student_Progress.save()
     
-    # If target date has already passed this year, calculate days until Nov 2 next year
-    if delta < 0:
-        delta = 0
+ 
+
+    if request.method == "POST":
+        exam_date = request.POST.get("exam_date")
+        if exam_date:
+            Student_profile.exam_date = exam_date
+            print("New code working")
+            Student_profile.save()
+ #this is to send the template the exam date so that the java script can catch it
+    exam_date_ = Student_profile.exam_date
 
     return render(request, 'runway.html',{
-        "Days_left": delta,
         "completions": json.dumps(Student_Progress.Month_Progress, cls=DjangoJSONEncoder),
-        "student_name": student_name
+        "student_name": student_name,
+        "exam_date": exam_date_
     })
 
 def upload_video(request, student_name):

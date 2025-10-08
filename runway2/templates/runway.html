@@ -28,13 +28,14 @@
         <div class="label">Days to exam</div>
         <div class="value" id="daysToExam">—</div>
 
-        <div class="exam-row">
-          <div class="hint" id="examDateHint">Exam: —</div>
-          <span id="changeDateBtn" class="change-date">Change date</span>
-          <input type="date" id="examDateInput" class="hidden-date-input">
-        </div>
-
-        <input type="date" id="examDateInput" class="hidden-date-input">
+        <form method="POST" action="">
+        {% csrf_token %}
+          <div class="exam-row">
+            <div class="hint" id="examDateHint">Exam: —</div>
+            <span id="changeDateBtn" class="change-date">Change date</span>
+            <input type="date" id="examDateInput" class="hidden-date-input" name="exam_date">
+          </div>
+        </form>
       </div>
 
 
@@ -84,7 +85,8 @@
     </footer>
   </div> 
   <script>
-    const studentName = "{{ student_name }}";  // Django will render actual username
+    const studentName = "{{ student_name }}";
+    const exam_date = "{{ exam_date }}";  // Django will render actual username
   </script>
   <script src="{% static 'js/runway.js' %}"></script>
 </body>
