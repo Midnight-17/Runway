@@ -14,6 +14,9 @@ from django.core.files.storage import FileSystemStorage
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.timezone import localtime, now
+from django.contrib.auth.forms import AuthenticationForm
+
+
 
 today = localtime(now()).date()  # timezone-aware "current day"
 month_day = today.day
@@ -151,8 +154,20 @@ def signup_view(request):
     return render(request, 'login_signup.html', {'student_form': student_form, 'teacher_form': teacher_form})
 
 
+# views.py
+
+
 def Login(request):
-    return render(request, "login.html")
+    form = AuthenticationForm(request, data=request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            # Log the user in
+            from django.contrib.auth import login
+            user = form.get_user()
+            login(request, user)
+            return redirect('runway2:home')  # or any page you want
+    return render(request, "login.html", {"form": form})
+
 
     
 

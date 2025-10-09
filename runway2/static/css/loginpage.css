@@ -100,3 +100,20 @@ input {
 .submit-btn:hover {
     background-color: var(--color-btn-hover);
 }
+/* When editing (swap label with input) */
+#Lgin_link {
+  text-decoration: none;
+  color: #6d6f73 ;
+}
+
+#Lgin_link:hover {
+  text-decoration: underline;
+  color: #00e0d5;
+}
+
+#lgin_text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px
+}

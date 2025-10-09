@@ -16,6 +16,12 @@
   --radius: 14px;
 }
 
+ 
+a { 
+  text-decoration: none;
+
+}
+
 * { box-sizing: border-box; }
 
 html, body { height: 100%; }
@@ -42,6 +48,11 @@ body {
 .dot-accent { background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 26px rgba(102, 204, 204, 0.35); }
 .tagline { margin: 0; color: var(--muted); font-size: 13px; }
 
+.tagline:hover{
+  color: #00e0d5;
+  text-decoration: underline;
+  
+}
 /* Cards / Stats */
 .stats {
   display: grid;
@@ -284,6 +295,4 @@ body {
   box-sizing: border-box; 
   vertical-align: middle; /* align with text */
 }
-
-/* When editing (swap label with input) */
 

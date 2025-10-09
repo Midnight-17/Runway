@@ -269,7 +269,6 @@ examDateInput.addEventListener("change", (e) => {
     EXAM_DATE.setTime(newDate.getTime());
     const daysToExam = Math.max(0, daysBetween(new Date(), EXAM_DATE));
     document.getElementById('daysToExam').textContent = String(daysToExam);
-    console.log("js is workign")
     form.submit()
   }
   examDateInput.style.display = "none";
