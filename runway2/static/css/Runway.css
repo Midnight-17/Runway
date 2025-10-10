@@ -28,11 +28,17 @@ html, body { height: 100%; }
 
 body {
   margin: 0;
+  min-height: 100vh; /* Ensures body covers full viewport */
   background: radial-gradient(1200px 800px at 85% -10%, #0d1320, #090d12 60%, #080b10 100%);
+  background-repeat: no-repeat; /* Prevents repeating */
+  background-attachment: fixed; /* Keeps it stable when scrolling */
+  background-size: cover; /* Ensures it stretches nicely */
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   letter-spacing: 0.2px;
 }
+
+
 
 .app {
   max-width: 1100px;
