@@ -212,6 +212,7 @@ studentButtons.forEach(button => {
     // Update mainStudent
     mainStudent = studentName_;
 
+
     // Update button highlights
     studentButtons.forEach(btn => {
       if (btn.dataset.student === mainStudent) {

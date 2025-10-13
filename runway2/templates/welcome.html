@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Runway · Welcome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/Runway.css' %}">
+  <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+</head>
+
+<body>
+  <div class="welcome-page">
+    <header class="welcome-header">
+      <h1 class="brand-title">Runway</h1>
+    </header>
+
+    <main class="welcome-content">
+      <h2 class="tagline-big">
+        consistency.<br>
+        beats passion.<br>
+        any day of the week.
+      </h2>
+
+      <div class="welcome-buttons">
+        <a href="{% url 'runway2:signup' %}" class="welcome-btn">Sign Up</a>
+        <a href="{% url 'runway2:login' %}" class="welcome-btn secondary">Login</a>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/welcome.js' %}"></script>
+</body>
+</html>

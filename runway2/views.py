@@ -176,10 +176,13 @@ def teacher_(request , teacher_name):
     teacher = TeacherProfile.objects.get(user__username = teacher_name)
     students = teacher.students.all()
     default_student = students[0]
+    default_student_profile = StudentProfile.objects.get(user__username = default_student)
+    exam_date = default_student_profile.exam_date
     return render(request,"teacher.html", {
         "teacher":teacher.user,
         "student_name": default_student,
-        "students" : students
+        "students" : students,
+        "exam_date": exam_date
     })
 
 
@@ -194,4 +197,6 @@ def teacher( request, teacher_name, student_name):
     })
 
 
+def welcome(request):
+    return render(request, "welcome.html")
 # Create your views here.
