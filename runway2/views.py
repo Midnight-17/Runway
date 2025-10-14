@@ -177,13 +177,21 @@ def teacher_(request , teacher_name):
     students = teacher.students.all()
     default_student = students[0]
     default_student_profile = StudentProfile.objects.get(user__username = default_student)
-    exam_date = default_student_profile.exam_date
-    return render(request,"teacher.html", {
-        "teacher":teacher.user,
+    exam_date_ = default_student_profile.exam_date
+    exam_dates = {}
+    for s in students:
+        profile = StudentProfile.objects.get(user__username = s)
+        name = s.user.username
+        exam_dates[name] = profile.exam_date.strftime("%Y-%m-%d") if profile.exam_date else None
+    exam_dates_json = json.dumps(exam_dates)
+    return render(request, "teacher.html", {
+        "teacher": teacher.user,
         "student_name": default_student,
-        "students" : students,
-        "exam_date": exam_date
+        "students": students,
+        "exam_date": exam_date_,
+        "exam_dates": exam_dates_json,
     })
+
 
 
 def teacher( request, teacher_name, student_name):
@@ -199,4 +207,6 @@ def teacher( request, teacher_name, student_name):
 
 def welcome(request):
     return render(request, "welcome.html")
+
+
 # Create your views here.

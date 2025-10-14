@@ -84,6 +84,7 @@
    <script>
     const studentName = "{{ student_name }}";
     const exam_date = "{{ exam_date }}";  // Django will render actual username
+      const exam_dates = JSON.parse('{{ exam_dates|safe|escapejs }}');
   </script>
   <script src="{% static 'js/runway.js' %}"></script>
 </body>

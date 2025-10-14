@@ -9,6 +9,13 @@ const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
 
 
 
+function update_date(date){
+  const EXAM_DATE = new Date(date);
+  const daysToExam = Math.max(0, daysBetween(now, EXAM_DATE));
+  document.getElementById('daysToExam').textContent = String(daysToExam);
+  document.getElementById('examDateHint').textContent = `Exam: ${formatDate(EXAM_DATE)}`;
+}
+
 
 function renderCalendar() {
   if (!calendar) return;
@@ -71,19 +78,17 @@ function renderCalendar() {
       cell.classList.add('completed');
     }
 
-
-
     calendar.appendChild(cell);
   });
 }
+
+update_date(exam_date)
 
 fetch(`/monthly-progress/${studentName}`)
   .then(res => res.json())
   .then(data => {
     completions = data.completions || [];
     Video_Progress_ = data.Video_Progress
-    console.log("Loaded progress:", completions);
-    console.log(Video_Progress_);
     // After fetching, render the calendar
     renderCalendar();
   })
@@ -136,14 +141,7 @@ function daysBetween(a,b){
     return Math.round((end - start) / msPerDay);
 }
 
-//example exam date
-const EXAM_DATE = new Date(exam_date);
-console.log(EXAM_DATE)
 
-//so here we are writing the js to render the exam date and the number of day to exam 
-const daysToExam = Math.max(0, daysBetween(now, EXAM_DATE));
-document.getElementById('daysToExam').textContent = String(daysToExam);
-document.getElementById('examDateHint').textContent = `Exam: ${formatDate(EXAM_DATE)}`;
 
 //getting all the things
 const trackBtn = document.getElementById("trackBtn");
@@ -179,7 +177,7 @@ if (trackBtn && videoInput) {
               // Re-render the entire calendar to show the new clickable cell
               renderCalendar();
               
-              console.log("Video uploaded successfully for day:", today);
+
           } else {
               alert("Upload failed.");
           }
@@ -211,7 +209,8 @@ studentButtons.forEach(button => {
   button.addEventListener("click", () => {
     // Update mainStudent
     mainStudent = studentName_;
-
+    s = exam_dates[studentName_]
+    update_date(s)
 
     // Update button highlights
     studentButtons.forEach(btn => {
@@ -236,8 +235,6 @@ function changeCalendar(studentName) {
   .then((data)=>{
     completions = data.completions || [];
     Video_Progress_ = data.Video_Progress
-    console.log("Loaded progress:", completions);
-    console.log(Video_Progress_);
     // After fetching, render the calendar
     renderCalendar();
   })
