@@ -6,6 +6,8 @@ const calendar = document.getElementById('calendar');
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                     'July', 'August', 'September', 'October', 'November', 'December'];
+Month_Streak_Number = document.getElementById("daysConsistent")
+Year_Streak_Number = document.getElementById("streakValue")
 
 
 
@@ -17,7 +19,7 @@ function update_date(date){
 }
 
 
-function renderCalendar() {
+function renderCalendar(x,y) {
   if (!calendar) return;
   // Clear any existing content
   calendar.innerHTML = '';
@@ -77,12 +79,17 @@ function renderCalendar() {
     if (inMonth && completions.includes(dayNumber)) {
       cell.classList.add('completed');
     }
+    Month_Streak_Number.textContent = x
+    Year_Streak_Number.textContent = y 
+
+
 
     calendar.appendChild(cell);
+    
   });
 }
 
-update_date(exam_date)
+update_date(exam_date);
 
 fetch(`/monthly-progress/${studentName}`)
   .then(res => res.json())
@@ -90,7 +97,9 @@ fetch(`/monthly-progress/${studentName}`)
     completions = data.completions || [];
     Video_Progress_ = data.Video_Progress
     // After fetching, render the calendar
-    renderCalendar();
+    Month_Streak = data.Month_Streak
+    Year_Streak = data.Year_Streak
+    renderCalendar(Month_Streak, Year_Streak);
   })
   .catch(err => console.error("Error fetching progress:", err));
 
@@ -173,6 +182,7 @@ if (trackBtn && videoInput) {
               // Store the video URL for today's date
               const today = now.getDate();
               Video_Progress_[today] = data.video_url;;
+
               
               // Re-render the entire calendar to show the new clickable cell
               renderCalendar();
@@ -181,7 +191,9 @@ if (trackBtn && videoInput) {
           } else {
               alert("Upload failed.");
           }
+          update_page(studentName);
       })
+      
       .catch((err) => console.error(err));
   });
 
@@ -210,7 +222,7 @@ studentButtons.forEach(button => {
     // Update mainStudent
     mainStudent = studentName_;
     s = exam_dates[studentName_]
-    update_date(s)
+    update_date(s);
 
     // Update button highlights
     studentButtons.forEach(btn => {
@@ -236,7 +248,9 @@ function changeCalendar(studentName) {
     completions = data.completions || [];
     Video_Progress_ = data.Video_Progress
     // After fetching, render the calendar
-    renderCalendar();
+    Month_Streak = data.Month_Streak
+    Year_Streak = data.Year_Streak
+    renderCalendar(Month_Streak, Year_Streak);
   })
   // your calendar logic here
 }
@@ -258,22 +272,40 @@ changeDateBtn.addEventListener("click", () => {
 
 
 
-const ExamInput = document.getElementById("examDateInput")
-const form = ExamInput.closest("form")
+const examForm = examDateInput.closest("form");
+
 examDateInput.addEventListener("change", (e) => {
   const newDate = new Date(e.target.value);
   if (!isNaN(newDate)) {
+    // Update UI immediately
     document.getElementById("examDateHint").textContent = `Exam: ${formatDate(newDate)}`;
-    EXAM_DATE.setTime(newDate.getTime());
-    const daysToExam = Math.max(0, daysBetween(new Date(), EXAM_DATE));
-    document.getElementById('daysToExam').textContent = String(daysToExam);
-    form.submit()
+    document.getElementById('daysToExam').textContent = String(
+      Math.max(0, daysBetween(new Date(), newDate))
+    );
+
+    // Submit to Django
+    examForm.submit();
   }
+
+  // Hide input, show button again
   examDateInput.style.display = "none";
   changeDateBtn.style.display = "inline-block";
-   // hide input, show label again
 });
 
+
+
+function update_page(Student_Name){
+  fetch(`/monthly-progress/${Student_Name}`)
+    .then(res => res.json())
+    .then(data => {
+      completions = data.completions || [];
+      Video_Progress_ = data.Video_Progress
+      // After fetching, render the calendar
+      Month_Streak = data.Month_Streak
+      Year_Streak = data.Year_Streak
+      renderCalendar(Month_Streak, Year_Streak);
+    })
+    .catch(err => console.error("Error fetching progress:", err));}
 
 
 //this is to submit the new date

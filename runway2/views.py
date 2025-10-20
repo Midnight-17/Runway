@@ -16,6 +16,16 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.timezone import localtime, now
 from django.contrib.auth.forms import AuthenticationForm
 
+def Streak_Calculator(m):
+  if not m:
+    return 0
+  n = 1 
+  for s in reversed(m):
+    if s-1 in m:
+      n = n +1
+    else:
+      return n
+
 
 
 today = localtime(now()).date()  # timezone-aware "current day"
@@ -33,6 +43,7 @@ def home(request, student_name):
     #define which days in the month are completed
     Student_profile = StudentProfile.objects.get(user__username = student_name)
     Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
+
 
    
 
@@ -56,7 +67,6 @@ def home(request, student_name):
         exam_date = request.POST.get("exam_date")
         if exam_date:
             Student_profile.exam_date = exam_date
-            print("New code working")
             Student_profile.save()
  #this is to send the template the exam date so that the java script can catch it
     exam_date_ = Student_profile.exam_date
@@ -105,12 +115,17 @@ def get_month_progress(request, student_name):
     Student_ = StudentProfile.objects.get( user__username = student_name)
     Progress, created = StudentProgress.objects.get_or_create(Student = Student_)
     Monthly_Progress = Progress.Month_Progress
+    Yearly_Progress = Progress.Year_Progress
     Video_Progress = Progress.Video_Progress
+    Month_Streak = Streak_Calculator(Monthly_Progress)
+    Year_Streak = Streak_Calculator(Yearly_Progress)
 
     # Return JSON with Month_Progress
     return JsonResponse({
         "completions": Monthly_Progress,  # e.g., [1, 5, 7]
-        "Video_Progress" : Video_Progress
+        "Video_Progress" : Video_Progress,
+        "Month_Streak":Month_Streak,
+        "Year_Streak":Year_Streak
     })
 
 
