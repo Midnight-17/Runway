@@ -16,15 +16,33 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.timezone import localtime, now
 from django.contrib.auth.forms import AuthenticationForm
 
-def Streak_Calculator(m):
-  if not m:
-    return 0
-  n = 1 
-  for s in reversed(m):
-    if s-1 in m:
-      n = n +1
-    else:
-      return n
+def Streak_Calculator_Month(m):
+    n = 1 
+    today = localtime(now()).date()
+    month_day = today.day 
+    if not m:
+        return 0
+    elif month_day not in m and (month_day-1) not in m:
+        return 0 
+    for s in reversed(m):
+        if s-1 in m:
+            n = n +1
+        else:
+            return n
+
+def Streak_Calculator_Year(m):
+    n = 1
+    today = localtime(now()).date()
+    year_day = today.timetuple().tm_yday  # <-- day of the year (1–365 or 366)
+    if not m:
+        return 0
+    elif year_day not in m and (year_day - 1) not in m:
+        return 0
+    for s in reversed(m):
+        if s - 1 in m:
+            n = n + 1
+        else:
+            return n
 
 
 
@@ -117,8 +135,8 @@ def get_month_progress(request, student_name):
     Monthly_Progress = Progress.Month_Progress
     Yearly_Progress = Progress.Year_Progress
     Video_Progress = Progress.Video_Progress
-    Month_Streak = Streak_Calculator(Monthly_Progress)
-    Year_Streak = Streak_Calculator(Yearly_Progress)
+    Month_Streak = Streak_Calculator_Month(Monthly_Progress)
+    Year_Streak = Streak_Calculator_Year(Yearly_Progress)
 
     # Return JSON with Month_Progress
     return JsonResponse({
