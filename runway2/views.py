@@ -61,6 +61,8 @@ def home(request, student_name):
     #define which days in the month are completed
     Student_profile = StudentProfile.objects.get(user__username = student_name)
     Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
+    if not Student_profile.exam_date:
+        Student_profile.exam_date = date.today()
 
 
    
@@ -198,7 +200,8 @@ def Login(request):
             from django.contrib.auth import login
             user = form.get_user()
             login(request, user)
-            return redirect('runway2:home')  # or any page you want
+            student_name = user.username
+            return redirect('runway2:homepage' , student_name = student_name)  # or any page you want
     return render(request, "login.html", {"form": form})
 
 
