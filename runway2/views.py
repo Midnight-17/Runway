@@ -15,6 +15,8 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.timezone import localtime, now
 from django.contrib.auth.forms import AuthenticationForm
+import hashlib
+
 
 def Streak_Calculator_Month(m):
     n = 1 
@@ -97,38 +99,52 @@ def home(request, student_name):
         "exam_date": exam_date_
     })
 
+
 def upload_video(request, student_name):
     if request.method == "POST" and request.FILES.get("video"):
-        # ok these are the steps that we are going to use to actually use to append to the lists
         today = localtime(now()).date()
         month_day = today.day
         year_day = today.timetuple().tm_yday
 
-
-        Student_profile = StudentProfile.objects.get( user__username = student_name )
-        Student_Progress, created  = StudentProgress.objects.get_or_create(Student = Student_profile)
-        Student_Progress.Month_Progress.append(month_day)
-        Student_Progress.Year_Progress.append(year_day)
+        # Get student data
+        Student_profile = StudentProfile.objects.get(user__username=student_name)
+        Student_Progress, created = StudentProgress.objects.get_or_create(Student=Student_profile)
         video = request.FILES["video"]
+
+        # --- Compute SHA256 hash ---
+        hasher = hashlib.sha256()
+        for chunk in video.chunks():
+            hasher.update(chunk)
+        video_hash = hasher.hexdigest()
+
+        # --- Check for duplicates ---
+        hash_list = Student_Progress.Video_Hashes
+        if video_hash in hash_list:
+            return redirect('runway2:homepage', student_name=student_name)
+
+        # --- Save video ---
         fs = FileSystemStorage(location=settings.MEDIA_ROOT)
         filename = fs.save(video.name, video)
         file_url = fs.url(filename)
+
+        # --- Update progress data ---
+        Student_Progress.Month_Progress.append(month_day)
+        Student_Progress.Year_Progress.append(year_day)
         Student_Progress.Video_Progress[str(month_day)] = file_url
 
-       
+        # --- Store video hash ---
+        hash_list.append(video_hash)
+        Student_Progress.Video_Hashes = hash_list
+
         Student_Progress.save()
 
-
-
-        
+        # --- Return JSON response ---
         return JsonResponse({
-                "video_url": file_url,
-                "Month_Progress" : Student_Progress.Month_Progress,
-                "Year_Progress":Student_Progress.Year_Progress,
-                "Video_Progress": Student_Progress.Video_Progress
-                             })
-
-    return JsonResponse({"error": "No video uploaded"}, status=400)
+            "video_url": file_url,
+            "Month_Progress": Student_Progress.Month_Progress,
+            "Year_Progress": Student_Progress.Year_Progress,
+            "Video_Progress": Student_Progress.Video_Progress
+        })
 
 def get_month_progress(request, student_name):
     # Get the logged-in student profile
