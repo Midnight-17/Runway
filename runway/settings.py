@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-yr)=6e-2$^$m7a#twmi)!(g9_pz-w2g2mmi$l^nw_6p)*y11ar
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["runway-a4jd.onrender.com"]
 
 
 # Application definition
