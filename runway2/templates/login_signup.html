@@ -22,12 +22,12 @@
     {% csrf_token %}
     {{ student_form.as_p }}
     <button type="submit" name="student_submit" class="submit-btn">Sign Up</button>
-    
-  </form>
     <div id="lgin_text">
       <p style="display: inline-block">have an account already?</p>
       <a id="Lgin_link" href="{% url 'runway2:login' %}">Login</a>
     </div>
+  </form>
+    
 
   <!-- Teacher form -->
   <form id="teacher-form" method="POST" class="hidden-form">

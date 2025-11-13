@@ -80,6 +80,7 @@ def home(request, student_name):
         Student_Progress.last_reset.year != today.year):
             Student_Progress.Month_Progress = []
             Student_Progress.Video_Progress = {}
+            Student_Progress.Video_Hashes = []
             Student_Progress.last_reset = today
             Student_Progress.save()
     
