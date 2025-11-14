@@ -1,0 +1,148 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* PAGE LAYOUT */
+.welcome-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  color: var(--text);
+  background: radial-gradient(1200px 800px at 85% -10%, #0d1320, #090d12 60%, #080b10 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  padding: 2rem;
+}
+
+/* HEADER */
+.welcome-header {
+  position: absolute;
+  top: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.brand-title {
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* TAGLINE */
+.tagline-big {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  line-height: 1.2;
+  margin: 0 1.5rem 3rem;
+  background: linear-gradient(135deg, var(--accent), #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 2s ease-out;
+  text-transform: lowercase;
+}
+
+/* BUTTONS */
+.welcome-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.8rem, 3vw, 1.5rem);
+  flex-wrap: nowrap; /* Always stay in one line */
+}
+
+.welcome-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: white;
+  padding: clamp(0.7rem, 2vw, 0.9rem) clamp(1.8rem, 5vw, 2.5rem);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(102, 204, 204, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-width: 120px; /* Keeps shape consistent on small screens */
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+.welcome-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.7s ease;
+}
+
+.welcome-btn:hover::before {
+  left: 100%;
+}
+
+.welcome-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(102, 204, 204, 0.5);
+}
+
+/* SECONDARY BUTTON */
+.welcome-btn.secondary {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  box-shadow: none;
+}
+
+.welcome-btn.secondary:hover {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 10px 28px rgba(102, 204, 204, 0.5);
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 768px) {
+  .tagline-big {
+    margin: 2rem 1rem;
+    line-height: 1.25;
+  }
+
+  /* Keep buttons horizontal but ensure they shrink gracefully */
+  .welcome-buttons {
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
+
+  .welcome-btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .welcome-page {
+    justify-content: flex-start;
+    padding-top: 5rem;
+  }
+
+  .tagline-big {
+    margin-top: 3rem;
+  }
+}

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yr)=6e-2$^$m7a#twmi)!(g9_pz-w2g2mmi$l^nw_6p)*y11ar'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["runway-a4jd.onrender.com"]
+ALLOWED_HOSTS = ["'Midnight17.pythonanywhere.com'.com"]
 
 
 # Application definition
@@ -118,8 +118,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+import os
+from pathlib import Path
 
-STATIC_URL = 'static/'
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_URL = '/static/'
+
+# This is the folder where collectstatic will put all files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Media files (uploads)
 MEDIA_URL = '/media/'
